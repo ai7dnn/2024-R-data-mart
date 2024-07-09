@@ -8,11 +8,13 @@ rm(list=ls())
 require(data.table)
 install.packages("data.table")
 # 패키지가 없으면 오류 발생
-# library(data.table)
+library(data.table)
+
+rnorm(10) # 표준 정규분포 난수 10개
 
 # v란 변수에 정규분포 5개 난수 생성
 DT = data.table(x=c("b", "b", "b", "a", "a"), v=rnorm(5))
-DT # 데이터 프레임과 달리 맨 왼쪽에 위치한 행번호가 콜론(:)으로 프린트 되어 나옴.
+DT # 데이터 프레임과 달리 맨 왼쪽에 위치한 행번호가 콜론(:)으로 프린트 되어 나옴
 
 head(cars)
 str(cars)
@@ -21,15 +23,33 @@ head(CARS)
 
 # airquality 
 AQ = data.table(airquality)
+AQ
 
 # 현존하는 데이터 테이블 이름, 행, 열의 수, 용량, 변수 이름들, key의 유무 출력
 tables() 
-sapply(CARS, class)
-lapply(CARS, class)
+sapply(CARS, class) # 결과 매트릭스
+lapply(CARS, class) # 결과 리스트
+
+mat <- matrix(1:9,3,3)
+mat
+apply(mat, 1, sum)
+apply(mat, 2, sum)
+
+x <- list(1:10)
+x
+lapply(x, sqrt)
+class(lapply(x, sqrt))
+
+sapply(x, sqrt)
+class(sapply(x, sqrt))
 
 # iris 
 IRIS = data.table(iris)
+IRIS
 tables() 
+
+iris[2, ] # 2행
+iris[2]   # 2열
 
 DT
 DT[2, ] # 2번째 행 조회
@@ -46,6 +66,24 @@ tables() # 확인해보면 이제 DT에는 key가 x란 변수로 지정됨을 �
 DT["b", ]
 DT["b", mult="first"] # 첫번째 결과
 DT["b", mult="last"]  # 마지막 결과
+
+###############################################
+# 매우 큰 데이터프레임 생성
+my.DF <- data.frame(x = runif(2.6e+07), y = rep(LETTERS, each = 10000))
+my.df <- data.frame(x = runif(2.6e+07), y = rep(letters, each = 10000))
+str(my.DF)
+str(my.df)
+# 행 검색 속도
+system.time(x <- my.DF[my.DF$y == 'C', ])
+
+# data.table로 변환
+my.DT <- as.data.table(my.DF)
+system.time(x <- my.DT[my.DT$y == 'C', ])
+# 키 설정
+setkey(my.DT, y)
+# 처리 속도가 매우 빠름 
+system.time(x <- my.DT[J('C'), ])
+###############################################
 
 # data.table은 빠른 처이 시간이 장점
 # 천만개 이상(10000068)의 행과 676(26^2)개 그룹
@@ -93,6 +131,8 @@ str(DT)
 tables()
 
 # 이진 검색을 함. J는 data.table 고유의 옵션 값으로 join을 의미
+# DT 데이터 테이블에서 키가 "R"과 "h"인 행을 검색
+# J("R", "h")는 data.table에서 키를 기준으로 데이터를 서브셋하는 데 사용
 ss <- system.time(ans2 <- DT[J("R", "h")])
 head(ans2, 3)
 dim(ans2)
@@ -125,4 +165,3 @@ identical(as.vector(tt), ss$V1)
 sss <- system.time(ss <- DT[, sum(v), by="x,y"]); sss; ss 
 
 ################################################################################
-

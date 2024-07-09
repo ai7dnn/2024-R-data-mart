@@ -26,7 +26,7 @@ names(airquality)
 aqm = melt(airquality, id = c("month", "day"))
 aqm
 
-# install.packages("dplyr")
+install.packages("dplyr")
 library(dplyr)
 sample_n(airquality, 5)
 sample_n(aqm, 5)
@@ -35,56 +35,41 @@ sample_n(aqm, 5)
 aqm = melt(airquality, id=c("month", "day"), na.rm = TRUE)
 aqm
 sample_n(aqm, 5)
-nrow(aqm)
-ncol(aqm)
 
 ## cast()
 # aqm 대상으로 day를 y 축, month를 x축, 
 # 그리고 각 variable들의 값을 안에 넣어서 보여주는 형식
 # 반환형은 3차원 배열. [일, 월, 변수]
+# 변수 : ozone solar.r wind temp 
 a <- cast(aqm, day ~ month ~ variable) # 결과는 3차원 배열
 a 
-
-mode(a)
 class(a)   # 배열 유형
-typeof(a)
-is.array(a)
-
 a[1, 1, 1] # 1일, 5월, ozone
 a[1, 1, 'ozone'] # 1일, 5월, ozone
 a[1:5, , 'ozone'] # *, *, ozone
 
 a[1, 1, 2] # 1일, 5월, solar.r
 a[1, 1, 'solar.r'] # 1일, 5월, solar.r
-a[1:5, , 'solar.r'] # 1일, 5월, solar.r
+a[1:5, , 'solar.r'] # 1일, 5월, solar.r: solar.r의 1행에서 5행
 
 # 월별 각 변수(오존, 태양복사, 바람, 온도)들의 평균값 산출 
 b <- cast(aqm, month ~ variable, mean) 
 b <- cast(aqm, month ~ variable, fun.aggregate=mean)
 b 
 
-mode(a)
-class(b)
-typeof(a)
-is.data.frame(b)
-
 # month 별로 모든 변수에 대해 평균을 구하고
 # 이어서 | 를 사용해 산출물을 분리해서 리스트로 반환
+aqm = melt(airquality, id=c("month", "day"), na.rm = TRUE)
 c <- cast(aqm, month ~ . | variable, mean) 
-c
-
-mode(c)
-class(c)
-typeof(c)
-
-is.data.frame(b)
-is.list(c)
-is.array(c)
-
-class(c[[1]])
 c[[1]]
 c[1]
 
+############# 월별로 모든 변수의 평균: 별 의미가 없음
+c2 <- cast(aqm, month ~ ., mean) 
+c2 
+##################
+
+# 각 변수의 평균을 참조, 리스트 참조 방법
 c[['ozone']]
 c[['solar.r']]
 c[['wind']]
@@ -96,12 +81,13 @@ c['temp']
 d <- cast(aqm, month ~ variable, mean, 
           margins = c("grand_row", "grand_col"))
 d 
-
+# 위와 동일
 d2 <- cast(aqm, month ~ variable, mean, 
           margins = TRUE)
 d2 
 
-# 일, 월 별로 subset을 이용해 ozone에 대해서만 평균 처리.
+head(airquality)
+# 일, 월 별로 subset을 이용해 ozone에 대해서만 평균(일 월의 값) 처리.
 e <- cast(aqm, day ~ month, mean, subset = variable=="ozone")
 e
 
@@ -120,10 +106,10 @@ f <- cast(aqm, month ~ variable, range)
 f <- cast(aqm, month ~ variable, fun.aggregate=range)
 f
 
-# 사용 가능한(설치된) 패키지(라이브러리) 확인 
+# 사용가능한(설치된) 패키지(라이브러리) 확인 
 library()
 installed.packages()
-.packages(all = TRUE)
+.packages(all = TRUE) # 간략하게 이름만
 
 # 현재 메모리에 로드(attach)된 패키지 확인
 search()
@@ -131,12 +117,12 @@ search()
 # 로드된 패키지를 메모리에서 언로드하려면 detach() 함수를 사용
 # 패키지 이름 앞에 package:를 붙여서 지정해야 함
 detach('package:reshape')
-search()
 
 # 패키지를 삭제(remove.packages)하면 패키지가 R 라이브러리에서 완전히 제거
 # 다시 사용하려면 다시 설치
 # remove.packages("reshape")
 # remove.packages("reshape2")
+library("reshape")
 aqm = melt(airquality, id=c("month", "day"))
 aqm
 

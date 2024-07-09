@@ -8,9 +8,12 @@ summary(iris) #기초통계
 summary(c(1:10))
 
 cov(iris[, 1:4]) # 공분산
-cor(iris[, 1:4]) # 상관관계
-cor(iris[1:4]) # 상관관계
+cor(iris[, 1:4]) # 상관계수
+cor(iris[1:4]) # 상관계수
 cor(iris) # 오류
+
+# NA's   :37 
+summary(airquality)
 
 ## 결측값 처리
 y <- c(1,2,3,NA)
@@ -34,7 +37,7 @@ mydata[complete.cases(mydata),]
 mydata[!complete.cases(mydata),]
 
 #######################################
-# install.packages("Amelia")
+install.packages("Amelia")
 library(Amelia)
 detach(package:Amelia) # unload
 search()
@@ -48,6 +51,7 @@ search()[str_detect(search(), ':Amelia')]
 data("freetrade")
 head(freetrade) # Amelia dataset
 str(freetrade)
+summary(freetrade)
 
 # 적어도 하나 na가 있는 행, 열 수
 dim(freetrade[!complete.cases(freetrade),])
@@ -55,7 +59,11 @@ dim(freetrade[!complete.cases(freetrade),])
 dim(freetrade[complete.cases(freetrade),])
 nrow(freetrade) # 총 행수 : 171개
 
+freetrade[!complete.cases(freetrade),]
+missmap(freetrade)
+
 unique(freetrade["country"]) # 9개국
+unique(freetrade["year"]) # 1981 ~ 1999년
 freetrade[freetrade$country == "Korea", ] # 한국 자료
 
 # freetrade 데이터셋의 각 행에 NA가 있는지 확인

@@ -11,7 +11,7 @@ outwith = boxplot(x)
 outwith$out # 이상값 출력
 
 ## 다른 방법으로는 outlier패키지 사용.
-#install.packages("outliers")
+install.packages("outliers")
 library(outliers)
 
 set.seed(1234)
@@ -33,4 +33,6 @@ outlier(y, opposite=TRUE) # 음수
 boxplot(y)
 boxplot(y)$out
 
+boxplot(y[,3])
+boxplot(y[,3])$out
 ###################################################################

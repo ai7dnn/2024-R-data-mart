@@ -1,4 +1,4 @@
-# install.packages("sqldf")
+install.packages("sqldf")
 search()
 library(sqldf)
 search()

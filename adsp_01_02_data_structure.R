@@ -4,10 +4,11 @@ rm(list=ls())
 # 스칼라
 a <- 3
 
-str(a)
-mode(a)
-typeof(a)
-class(a)
+str(a)    # 객체의 내부 구조를 표현
+mode(a)   # 객체의 저장 모드
+typeof(a) # 내부 타입 또는 객체의 저장 모드
+class(a)  # 객체지향 관점의 클래스
+
 is.numeric(a)
 is.character(a)
 
@@ -22,11 +23,13 @@ is.numeric(s)
 is.character(s)
 
 ###### 행렬 ##############################
+# 행과 열의 2차원, 기본 열 우선, 단일 유형의 자료
 # 컬럼이 3개인 행렬(디폴트 열기준)
 mx = matrix(c(1,2,3,4,5,6), ncol=2)       
 mx
 is.numeric(mx)
 is.matrix(mx)
+is.vector(mx)
 
 str(mx)
 mode(mx)
@@ -48,7 +51,7 @@ mode(mx2)
 typeof(mx2)
 class(mx2)
 
-# array: 3차원 이상의 단일 자료형의 묶음
+# 배열 array: 3차원 이상의 단일 자료형의 묶음
 ###### 3차원 배열 ##############################
 arr = array(1:12, dim = c(2, 3, 2))       
 arr
@@ -87,6 +90,7 @@ print(rbind(mx, r1))
 print(cbind(mx2, c1))
 
 ###### 데이터프레임 ######################
+# 열마다 단일 자료형, 2차원 데이터
 income = c(100, 200, 150, 300, 900)
 car = c("kia", "hyundai", "kia", "toyota", "lexus")
 marriage = c(FALSE, FALSE, FALSE, TRUE, TRUE)
